@@ -1,4 +1,6 @@
 import pygame
+#Pygame is here only for test purposes to display things.
+#Delete every pygame related lines or comment them out.
 
 class Rectangle:
 	def __init__(self, x, y, width, height):

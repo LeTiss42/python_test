@@ -1,22 +1,27 @@
-import pygame, sys, random
+import pygame, sys, random, time
 import my_pygame
 
+#Pygame is here only for test purposes to display things.
+#Delete every pygame related lines or comment them out.
+
 #constant variables
-screen_width = 1280
-screen_height = 960
+screen_width = 1000
+screen_height = 500
+
+fps = 100
 
 ballw = 0.01
 ballh = 0.01
-ball_speed_x = 5 * random.choice((1, -1))
-ball_speed_y = 5 * random.choice((1, -1))
+ball_speed_x = 3 * random.choice((1, -1))
+ball_speed_y = 3 * random.choice((1, -1))
 
 pl_sizex = 0.03
 pl_sizey = 0.2
-pl_speed_y = 10
+pl_speed_y = 3
 
 pr_sizex = 0.03
 pr_sizey = 0.2
-pr_speed_y = 10
+pr_speed_y = 3
 
 ballw *= screen_width
 #ballh *= screen_height
@@ -71,15 +76,11 @@ def ball_animation(ball):
 			ball.maxspeedy *= -1
 
 	if (check_col_rect(ball, player_l) and ball.maxspeedx < 0):
-		print("1")
 		if (abs(ball.left - player_l.right) < 2*abs(ball.maxspeedx)):
-			print("2")
 			ball.maxspeedx *= -1
 		elif ((ball.maxspeedy > 0) and (abs(ball.bot - player_l.top) < (abs(ball.maxspeedy) + abs(player_l.speedy)))):
-			print("3")
 			ball.maxspeedy *= -1
 		elif ((ball.maxspeedy < 0) and (abs(ball.top - player_l.bot) < (abs(ball.maxspeedy) + abs(player_l.speedy)))):
-			print("3")
 			ball.maxspeedy *= -1
 
 def player_animation(player, opp):
@@ -147,6 +148,7 @@ player_r = my_pygame.Rectangle((screen_width - pr_sizex) - 10, (screen_height/2 
 player_r.maxspeedy = pr_speed_y
 
 while True:
+	myclock = time.monotonic_ns()
 	#handling input
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -165,4 +167,7 @@ while True:
 	pygame.draw.ellipse(screen, light_grey, ball.pygame)
 
 	pygame.display.flip()
-	clock.tick(60)
+	while((time.monotonic_ns() - myclock) < (1000000000 / fps)):
+		time.sleep(0.00001)
+	print(1000000000 / (time.monotonic_ns() - myclock))
+	print(ball.x, ball.y)
